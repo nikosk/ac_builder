@@ -1,1 +1,478 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
+
+$bonfire-palette: (
+  50: #fce4ec,
+  100: #f8bbd0,
+  200: #f48fb1,
+  300: #f06292,
+  400: #ec407a,
+  500: #F49979,
+  600: #F49979,
+  700: #c2185b,
+  800: #ad1457,
+  900: #880e4f,
+  A100: #ff80ab,
+  A200: #ff4081,
+  A400: #f50057,
+  A700: #c51162,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $light-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  )
+);
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$ac_builder-primary: mat.define-palette($bonfire-palette);
+$ac_builder-accent: mat.define-palette($bonfire-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$ac_builder-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$ac_builder-theme: mat.define-light-theme((
+  color: (
+    primary: $ac_builder-primary,
+    accent: $ac_builder-accent,
+    warn: $ac_builder-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($ac_builder-theme);
+
 /* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.container{
+  width: 80%;
+  margin: 0 auto;
+}
+.grid {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -webkit-flex: 0 1 auto;
+  -ms-flex: 0 1 auto;
+  -webkit-box-flex: 0;
+  flex: 0 1 auto;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin: 0 -8px 0 -8px
+}
+
+.grid.grid-nogutter {
+  margin: 0
+}
+
+.grid.grid-nogutter > .col {
+  padding: 0
+}
+
+.col {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0 8px 0 8px
+}
+
+.col-align-top {
+  align-self: flex-start
+}
+
+.col-align-bottom {
+  align-self: flex-end
+}
+
+.col-align-middle {
+  align-self: center
+}
+
+.col-top {
+  justify-content: flex-start !important;
+  flex-direction: column;
+  display: flex
+}
+
+.col-bottom {
+  justify-content: flex-end !important;
+  flex-direction: column;
+  display: flex
+}
+
+.col-middle {
+  justify-content: center;
+  flex-direction: column;
+  display: flex
+}
+
+.grid-start {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start
+}
+
+.grid-center {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center
+}
+
+.grid-end {
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end
+}
+
+.grid-around {
+  justify-content: space-around
+}
+
+.grid-between {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between
+}
+
+.col-first {
+  -webkit-box-ordinal-group: 0;
+  -ms-flex-order: -1;
+  order: -1
+}
+
+.col-last {
+  -webkit-box-ordinal-group: 2;
+  -ms-flex-order: 1;
+  order: 1
+}
+
+.grid-reverse {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse
+}
+
+.col-fixed {
+  flex: initial
+}
+
+.col-grow-2 {
+  flex-grow: 2
+}
+
+.col-grow-3 {
+  flex-grow: 3
+}
+
+.col-grow-4 {
+  flex-grow: 4
+}
+
+.col-grow-5 {
+  flex-grow: 5
+}
+
+.col-grow-6 {
+  flex-grow: 6
+}
+
+.col-grow-7 {
+  flex-grow: 7
+}
+
+.col-grow-8 {
+  flex-grow: 8
+}
+
+.col-grow-9 {
+  flex-grow: 9
+}
+
+.col-grow-10 {
+  flex-grow: 10
+}
+
+.col-grow-11 {
+  flex-grow: 11
+}
+
+.col-1 {
+  flex-basis: 8.33333%;
+  max-width: 8.33333%
+}
+
+.col-2 {
+  -webkit-flex-basis: 16.66667%;
+  flex-basis: 16.66667%;
+  max-width: 16.66667%
+}
+
+.col-3 {
+  flex-basis: 25%;
+  max-width: 25%
+}
+
+.col-4 {
+  flex-basis: 33.33333%;
+  max-width: 33.33333%
+}
+
+.col-5 {
+  flex-basis: 41.66667%;
+  max-width: 41.66667%
+}
+
+.col-6 {
+  flex-basis: 50%;
+  max-width: 50%
+}
+
+.col-7 {
+  flex-basis: 58.33333%;
+  max-width: 58.33333%
+}
+
+.col-8 {
+  flex-basis: 66.66667%;
+  max-width: 66.66667%
+}
+
+.col-9 {
+  flex-basis: 75%;
+  max-width: 75%
+}
+
+.col-10 {
+  flex-basis: 83.33333%;
+  max-width: 83.33333%
+}
+
+.col-11 {
+  flex-basis: 91.66667%;
+  max-width: 91.66667%
+}
+
+.col-12 {
+  flex-basis: 100%;
+  max-width: 100%
+}
+
+@media only screen and (max-width: 480px) {
+  .col-sm {
+    flex: 100%;
+    max-width: 100%
+  }
+}
+
+@media only screen and (max-width: 624px) {
+  .col-md {
+    flex: 100%;
+    max-width: 100%
+  }
+}
+
+@media only screen and (max-width: 744px) {
+  .col-lg {
+    flex: 100%;
+    max-width: 100%
+  }
+}
+
+
+// Forms
+
+
+// Label
+.label {
+  display: block;
+  margin-bottom: 0.25em;
+}
+
+// Input
+.input {
+  padding: 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: lightgray;
+  background-color: white;
+
+  &:focus {
+    border-color: gray;
+  }
+
+  &::placeholder {
+    color: gray;
+  }
+}
+
+// Checkbox
+.checkbox {
+  position: absolute;
+  width: auto;
+  opacity: 0;
+
+  &:focus {
+    + .checkbox-label {
+      &:before, &:after {
+        border-color: gray;
+      }
+    }
+  }
+
+  &:checked {
+    + .checkbox-label {
+      &:after {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.checkbox-label {
+  @extend .label;
+
+  position: relative;
+  display: inline-block;
+  margin-right: 0.5em;
+  padding-left: (18px + 10px);
+
+  &:before, &:after {
+    @extend .input;
+
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: inline-block;
+    margin-top: -(18px / 2);
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    content: "";
+  }
+
+  &:after {
+    border-color: transparent;
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2213%22%20height%3D%2210.5%22%20viewBox%3D%220%200%2013%2010.5%22%20enable-background%3D%22new%200%200%2013%2010.5%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpath%20fill%3D%22%23424242%22%20d%3D%22M4.8%205.8L2.4%203.3%200%205.7l4.8%204.8L13%202.4c0%200-2.4-2.4-2.4-2.4L4.8%205.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-position: center;
+    background-size: 13px;
+    background-repeat: no-repeat;
+    opacity: 0;
+  }
+}
+
+// Radio
+.radio {
+  @extend .checkbox;
+}
+
+.radio-label {
+  @extend .checkbox-label;
+
+  &:before, &:after {
+    border-radius: 50%;
+  }
+
+  &:after {
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2013%2013%22%20enable-background%3D%22new%200%200%2013%2013%22%20xml%3Aspace%3D%22preserve%22%3E%3Ccircle%20fill%3D%22%23424242%22%20cx%3D%226.5%22%20cy%3D%226.5%22%20r%3D%226.5%22%2F%3E%3C%2Fsvg%3E");
+    background-size: 8px;
+  }
+}
+
+// Select
+.select {
+  @extend .input;
+
+  position: relative;
+  z-index: 1;
+  padding-right: 40px;
+
+  &::-ms-expand {
+    display: none;
+  }
+}
+
+.select-wrap {
+  position: relative;
+
+  &:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 0 15px;
+    width: 10px;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20version%3D%221.1%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2213%22%20height%3D%2211.3%22%20viewBox%3D%220%200%2013%2011.3%22%20enable-background%3D%22new%200%200%2013%2011.3%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpolygon%20fill%3D%22%23424242%22%20points%3D%226.5%2011.3%203.3%205.6%200%200%206.5%200%2013%200%209.8%205.6%20%22%2F%3E%3C%2Fsvg%3E");
+    background-position: center;
+    background-size: 10px;
+    background-repeat: no-repeat;
+    content: "";
+    pointer-events: none;
+  }
+}
+
+// Textarea
+.textarea {
+  @extend .input;
+
+  min-height: 100px;
+  resize: vertical;
+}
+

@@ -1,0 +1,14 @@
+<mat-card class="feature" (mouseover)="menuVisible = true">
+  <mat-card-title>Feature:
+    <app-editable-text [control]="getControl('title')"></app-editable-text>
+  </mat-card-title>
+  <mat-card-content>
+    <p>
+      <app-editable-text [control]="getControl('description')"></app-editable-text>
+    </p>
+  </mat-card-content>
+  <mat-card-actions *ngIf="menuVisible">
+    <button mat-button [disabled]="feature.hasBackground()">Add background</button>
+    <button mat-button>Add scenario</button>
+  </mat-card-actions>
+</mat-card>

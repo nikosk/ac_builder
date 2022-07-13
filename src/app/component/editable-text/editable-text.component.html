@@ -1,0 +1,16 @@
+<span class="editable-text">
+  <span class="input-sizer" [attr.data-value]="val">
+    <input #inputElement class="input editable"
+           [ngClass]="{'edited': control.edited}"
+           [formControl]="control.input"
+           (focusin)="control.edited = true"
+           (keyup.enter)="save(control)"
+           (keyup.escape)="cancel()"
+           onInput="this.parentNode.dataset.value = this.value"
+    />
+  </span>
+  <span *ngIf="control.edited">
+        <button mat-button color="primary" (click)="save(control)">Save</button>
+        <button mat-button color="accent" (click)="cancel()">Cancel</button>
+  </span>
+</span>
