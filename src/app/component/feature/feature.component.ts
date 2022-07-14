@@ -3,8 +3,6 @@ import {Background, Feature, Given, Scenario} from "../../models/bdd";
 import {FormControl, Validators} from "@angular/forms";
 import {Control, Form} from "../editable-text/editable-text.component";
 import {UtilityService} from "../../service/utility.service";
-import {timeout} from "rxjs";
-import {B} from "@angular/cdk/keycodes";
 
 @Component({
   selector: 'app-feature',
@@ -69,8 +67,9 @@ export class FeatureComponent implements OnInit {
   }
 
   addBackground() {
-    this.feature.background = new Background();
-    this.feature.background.addGiven(new Given("I added a background to a feature"));
+    let background = new Background();
+    background.addGiven(new Given("I added a background to a feature"));
+    this.feature.addBackground(background);
   }
 
   addScenario() {

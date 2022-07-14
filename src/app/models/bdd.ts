@@ -24,13 +24,12 @@ export interface Keyword {
 }
 
 interface WithBackground {
-  protected background: Background | null;
-
   addBackground(background: Background): void;
 }
 
 abstract class WithBackgroundImpl implements WithBackground {
-  protected abstract background: Background | null;
+
+  protected background: Background | null = null;
 
   addBackground(background: Background): void {
     if (this.background) {
@@ -42,8 +41,8 @@ abstract class WithBackgroundImpl implements WithBackground {
 }
 
 export class Feature extends WithBackgroundImpl implements Keyword, WithBackground, WithTitle, WithDescription, Printable {
+
   tag: KeywordTag = "Feature";
-  private background: Background | null = null;
   private rules: Rule[] = [];
   private scenarios: Scenario[] = [];
 
@@ -57,8 +56,8 @@ export class Feature extends WithBackgroundImpl implements Keyword, WithBackgrou
   }
 
   override addBackground(background: Background) {
-    background.parent = this;
     super.addBackground(background);
+    background.parent = this;
   }
 
   print(): string {
@@ -85,7 +84,6 @@ export class Feature extends WithBackgroundImpl implements Keyword, WithBackgrou
 
 export class Rule extends WithBackgroundImpl implements Keyword, WithTitle, WithDescription, Printable {
   tag: KeywordTag = "Rule";
-  background: Background | null = null;
   scenarios: Scenario[] = [];
   public parent!: Feature;
 
@@ -106,6 +104,11 @@ export class Rule extends WithBackgroundImpl implements Keyword, WithTitle, With
 
   getLevel(): number {
     return this.parent.getLevel() + 1;
+  }
+
+  override addBackground(background: Background) {
+    super.addBackground(background);
+    background.parent = this;
   }
 
 }
@@ -174,7 +177,6 @@ export class Scenario implements Keyword, WithTitle, Printable {
   getLevel(): number {
     return this.parent.getLevel() + 1;
   }
-
 
 }
 
