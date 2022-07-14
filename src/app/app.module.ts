@@ -14,26 +14,30 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import { EditableTextComponent } from './component/editable-text/editable-text.component';
+import {MatIconModule} from "@angular/material/icon";
+import { PreviewComponent } from './component/preview/preview.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FeatureComponent,
     EditableTextComponent,
+    PreviewComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatGridListModule,
-    MatCardModule,
-    MatButtonModule,
-    EditableModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatGridListModule,
+        MatCardModule,
+        MatButtonModule,
+        EditableModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatIconModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

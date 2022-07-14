@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {Background, Feature, Given, Rule, Scenario, Then, When} from "./models/bdd";
+import {UtilityService} from "./service/utility.service";
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,13 @@ import {Background, Feature, Given, Rule, Scenario, Then, When} from "./models/b
 export class AppComponent {
   title = 'ac_builder';
   feature = this.showBackgroundExample();
+
+  constructor(private utilityService: UtilityService) {}
+
+  @HostListener('document:click', ['$event'])
+  documentClick(event: any): void {
+    this.utilityService.documentClickedTarget.next(event.target)
+  }
 
   showRuleWithBackgroundExample(): Feature {
     const feature = new Feature("Overdue tasks", "Let users know when tasks are overdue, even when using other features of the app");

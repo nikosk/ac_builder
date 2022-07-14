@@ -6,7 +6,7 @@ function tabs(number: number) {
 }
 
 interface Printable {
-  print(level: number): string;
+  print(): string;
 }
 
 interface WithTitle {
@@ -19,16 +19,18 @@ interface WithDescription {
 
 export interface Keyword {
   tag: KeywordTag;
+
+  getLevel(): number;
 }
 
 interface WithBackground {
-  background: Background | null;
+  protected background: Background | null;
 
   addBackground(background: Background): void;
 }
 
 abstract class WithBackgroundImpl implements WithBackground {
-  abstract background: Background | null;
+  protected abstract background: Background | null;
 
   addBackground(background: Background): void {
     if (this.background) {
@@ -41,32 +43,43 @@ abstract class WithBackgroundImpl implements WithBackground {
 
 export class Feature extends WithBackgroundImpl implements Keyword, WithBackground, WithTitle, WithDescription, Printable {
   tag: KeywordTag = "Feature";
-  background: Background | null = null;
-  rules: Rule[] = [];
-  scenarios: Scenario[] = [];
+  private background: Background | null = null;
+  private rules: Rule[] = [];
+  private scenarios: Scenario[] = [];
 
   constructor(public title: string, public description: string | null) {
     super();
   }
 
   addRule(rule: Rule) {
+    rule.parent = this;
     this.rules.push(rule);
   }
 
+  override addBackground(background: Background) {
+    background.parent = this;
+    super.addBackground(background);
+  }
+
   print(): string {
-    return `${this.tag}: ${this.title}\n${this.background ? this.background.print(1) : ''}\n${this.rules.map(r => {
-      return r.print(1);
+    return `${this.tag}: ${this.title}\n${this.description}\n\n${this.background ? this.background.print() : ''}\n${this.rules.map(r => {
+      return r.print();
     }).join("")}\n${this.scenarios.map(s => {
-      return s.print(1)
+      return s.print()
     }).join("")}`;
   }
 
   addScenario(scenario: Scenario) {
+    scenario.parent = this;
     this.scenarios.push(scenario);
   }
 
   hasBackground() {
     return this.background != null;
+  }
+
+  getLevel(): number {
+    return 1;
   }
 }
 
@@ -74,35 +87,47 @@ export class Rule extends WithBackgroundImpl implements Keyword, WithTitle, With
   tag: KeywordTag = "Rule";
   background: Background | null = null;
   scenarios: Scenario[] = [];
+  public parent!: Feature;
 
   constructor(public title: string, public description: string | null) {
     super();
   }
 
   addScenario(scenario: Scenario) {
+    scenario.parent = this;
     this.scenarios.push(scenario);
   }
 
-  print(level: number): string {
-    return `${tabs(level)}${this.tag}: ${this.title}\n${this.background ? this.background.print(level + 1) : ''}\n${this.scenarios.map(s => {
-      return s.print(level + 1)
+  print(): string {
+    return `${tabs(this.getLevel())}${this.tag}: ${this.title}\n${this.background ? this.background.print() : ''}\n${this.scenarios.map(s => {
+      return s.print()
     }).join("")}`;
   }
+
+  getLevel(): number {
+    return this.parent.getLevel() + 1;
+  }
+
 }
 
 export interface Step extends Printable {
+
   tag: StepTag;
   definition: string;
 }
 
 abstract class StepImpl implements Step, Printable {
   abstract tag: StepTag;
-
+  parent!: Scenario | Background
   constructor(public definition: string) {
   }
 
-  print(level: number): string {
-    return `${tabs(level)}${this.tag} ${this.definition}\n`;
+  print(): string {
+    return `${tabs(this.getLevel())}${this.tag} ${this.definition}\n`;
+  }
+
+  getLevel(): number {
+    return this.parent.getLevel() + 1;
   }
 }
 
@@ -130,36 +155,55 @@ export class But extends StepImpl {
 export class Scenario implements Keyword, WithTitle, Printable {
   tag: KeywordTag = "Scenario";
   steps: Step[] = [];
+  parent!: Keyword;
 
   constructor(public title: string) {
   }
 
-  addStep(step: Step) {
+  addStep(step: StepImpl) {
+    step.parent = this;
     this.steps.push(step);
   }
 
-  print(level: number): string {
-    return `${tabs(level)}${this.tag}: ${this.title}\n${this.steps.map(s => {
-      return s.print(level + 1);
+  print(): string {
+    return `${tabs(this.getLevel())}${this.tag}: ${this.title}\n${this.steps.map(s => {
+      return s.print();
     }).join("")}\n`;
   }
+
+  getLevel(): number {
+    return this.parent.getLevel() + 1;
+  }
+
+
 }
 
 export class Background implements Keyword, Printable {
   tag: KeywordTag = "Background"
   givens: Step[] = []
+  parent!: Rule | Feature
 
-  print(level: number): string {
-    return `${tabs(level)}${this.tag}:\n${this.givens.map((g) => {
-      return g.print(level + 1)
+  constructor() {
+  }
+
+  print(): string {
+    return `${tabs(this.getLevel())}${this.tag}:\n${this.givens.map((g) => {
+      return g.print()
     }).join("")}`;
   }
 
   addGiven(given: Given) {
+    given.parent = this;
     if (this.givens.length == 0) {
       this.givens.push(given);
     } else {
-      this.givens.push(new And(given.definition));
+      let and = new And(given.definition);
+      and.parent = this;
+      this.givens.push(and);
     }
+  }
+
+  getLevel(): number {
+    return this.parent.getLevel() + 1;
   }
 }

@@ -5,11 +5,16 @@
   </span>
 </mat-toolbar>
 <div class="container">
-  <section class="ac-form">
+  <div class="grid">
+    <div class="col">
+      <section class="feature">
+        <app-feature [feature]="feature"></app-feature>
+      </section>
+    </div>
+    <div class="col">
+      <app-preview [feature]="feature"></app-preview>
+    </div>
+  </div>
 
-  </section>
-  <section class="feature">
-    <app-feature [feature]="feature"></app-feature>
-  </section>
 </div>
 <router-outlet></router-outlet>
